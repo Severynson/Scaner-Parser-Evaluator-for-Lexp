@@ -1,4 +1,4 @@
-Line: 34 + 89 - x * y23
+Line: 34 + 89 - x * y23;
 3 : NUMBER
 + : SYMBOL
 8 : NUMBER
@@ -6,6 +6,7 @@ Line: 34 + 89 - x * y23
 x : IDENTIFIER
 * : SYMBOL
 y : IDENTIFIER
+; : SYMBOL
 
 Line: cxo6y / 67z23 * 56& 34 * x
 c : IDENTIFIER
@@ -23,5 +24,6 @@ x : IDENTIFIER
 
 Line: catfood:=45
 c : IDENTIFIER
-ERROR READING ":" (line 6)
+:= : SYMBOL
+4 : NUMBER
 

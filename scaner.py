@@ -7,7 +7,7 @@ state_line_of_the_error = True
 
 identifierRegex = r"[a-zA-Z][a-zA-Z0-9]*"
 numberRegex = r"[0-9]+"
-symbolRegex = r"\+|\-|\*|/|\(|\)"
+symbolRegex = r"\+|\-|\*|/|\(|\)|:=|;"
 
 
 class TokenType(Enum):
@@ -45,10 +45,6 @@ def scan_line(inputString=""):
     tokens = [initTokenDict(inputString[0].strip())]
     index = 1
     while index < len(inputString):
-        previous_char = inputString[index - 1]
-        if get_token_type(previous_char) == TokenType.ERR.value:
-            break
-
         current_token = tokens[-1]["token"]
         current_token_type = tokens[-1]["tokenType"]
 
@@ -58,12 +54,35 @@ def scan_line(inputString=""):
         potential_updated_token = f"{current_token}{char}"
         potential_updated_token_type = get_token_type(potential_updated_token)
 
-        if current_token_type == potential_updated_token_type:
-            current_token = potential_updated_token
-        elif char_type != TokenType.SPACE.value:
-            tokens.append(initTokenDict(inputString[index]))
+        if potential_updated_token_type == TokenType.ERR.value:
+            # Check if continue reading won't start to make sense
+            # For example, while ":" is an error, ":=" is a symbol
+            look_ahead_index = index + 1
+            found_valid = False
 
-        index += 1
+            while look_ahead_index <= len(inputString):
+                potential_token = inputString[index:look_ahead_index]
+                if get_token_type(potential_token) != TokenType.ERR.value:
+                    if char_type != TokenType.SPACE.value:
+                        tokens.append(initTokenDict(potential_token))
+                    index = look_ahead_index
+                    found_valid = True
+                    break
+                look_ahead_index += 1
+
+            if not found_valid:
+                tokens.append(initTokenDict(char))
+                tokens[-1]["tokenType"] = TokenType.ERR.value
+                break
+
+        elif current_token_type == potential_updated_token_type:
+            current_token = potential_updated_token
+            index += 1
+        else:
+            if char_type != TokenType.SPACE.value:
+                tokens.append(initTokenDict(char))
+
+            index += 1
 
     return tokens
 
