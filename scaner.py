@@ -3,6 +3,8 @@ from enum import Enum
 import os
 import argparse
 
+state_line_of_the_error = True
+
 identifierRegex = r"[a-zA-Z][a-zA-Z0-9]*"
 numberRegex = r"[0-9]+"
 symbolRegex = r"\+|\-|\*|/|\(|\)"
@@ -31,15 +33,15 @@ def get_token_type(token):
 
 initTokenDict = lambda char: {"token": f"{char}", "tokenType": get_token_type(char)}
 
-initTokenizedLineDict = lambda title, tokens: {
+initTokenizedLineDict = lambda line_number, title, tokens: {
+    "line_number": line_number,
     "line": title,
     "tokens": tokens,
 }
 
 
+# Do not call this method itself even for a single string, use scaner instead
 def scan_line(inputString=""):
-    if inputString == "":
-        return
     tokens = [initTokenDict(inputString[0].strip())]
     index = 1
     while index < len(inputString):
@@ -68,10 +70,10 @@ def scan_line(inputString=""):
 def scaner(string_to_tokenize):
     lines_to_tokenize = string_to_tokenize.split("\n")
     tokenized_lines = []
-    for line in lines_to_tokenize:
-        line = line.lstrip()
-        tokens = scan_line(line)
-        tokenized_lines.append(initTokenizedLineDict(line, tokens))
+    for line_number, line in enumerate(lines_to_tokenize, start=1):
+        if line and not line.isspace():
+            tokens = scan_line(line)
+            tokenized_lines.append(initTokenizedLineDict(line_number, line, tokens))
     return tokenized_lines
 
 
@@ -86,7 +88,9 @@ def input_and_output(input_file, output_file):
                 file_to_write.write(f"Line: {line["line"]}\n")
                 for token in line["tokens"]:
                     if token["tokenType"] == TokenType.ERR.value:
-                        file_to_write.write(f'ERROR READING "{token["token"]}"\n')
+                        file_to_write.write(
+                            f'ERROR READING "{token["token"]}" {"(line " + str(line["line_number"]) + ")" if state_line_of_the_error else ""}\n'
+                        )
                     else:
                         file_to_write.write(
                             f"{token["token"]} : {f"{token["tokenType"]}".upper()}\n"
@@ -108,7 +112,9 @@ def main():
             print(f"Line: {line["line"]}")
             for token in line["tokens"]:
                 if token["tokenType"] == TokenType.ERR.value:
-                    print(f'ERROR READING "{token["token"]}"')
+                    print(
+                        f'ERROR READING "{token["token"]}" {"(line " + str(line["line_number"]) + ")" if state_line_of_the_error else ""}\n'
+                    )
                 else:
                     print(f"{token["token"]} : {f"{token["tokenType"]}".upper()}")
             print("")

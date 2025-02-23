@@ -18,16 +18,14 @@ cxo6y / 67z23 * 56& 34 * x
 what allows to use a scaner function dirrectly.
 Usecase example:
 
-from scaner import scaner, scan_line
+from scaner import scaner
 
 # To scan a single line for it's tokens
-result = scan_line("34 + 89 - x * y23")
-# or
 result = scaner("34 + 89 - x * y23")[0]["tokens"]
 
 # To scan a whole code at once (multiple lines separated by "\n")
-# ! Principle of the longest substring is not volated.
-# Each new line will be parsed into the separate structure.
+# ! Principle of the longest substring is not violated.
+# Each new line will be parsed into the separate dictionary.
 
 result = scaner(
     """34 + 89 - x * y23
