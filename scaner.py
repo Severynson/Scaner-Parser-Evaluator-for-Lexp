@@ -49,16 +49,17 @@ def scan_line(inputString=""):
         if get_token_type(previous_char) == TokenType.ERR.value:
             break
 
-        current_type = tokens[-1]["tokenType"]
+        current_token = tokens[-1]["token"]
+        current_token_type = tokens[-1]["tokenType"]
 
         char = inputString[index]
         char_type = get_token_type(char)
 
-        potential_update = f"{tokens[-1]["token"]}{char}"
-        potential_update_type = get_token_type(potential_update)
+        potential_updated_token = f"{current_token}{char}"
+        potential_updated_token_type = get_token_type(potential_updated_token)
 
-        if current_type == potential_update_type:
-            tokens[-1]["token"] = potential_update
+        if current_token_type == potential_updated_token_type:
+            current_token = potential_updated_token
         elif char_type != TokenType.SPACE.value:
             tokens.append(initTokenDict(inputString[index]))
 
