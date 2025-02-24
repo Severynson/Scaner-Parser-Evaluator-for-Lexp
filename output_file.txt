@@ -1,29 +1,72 @@
-Line: 34 + 89 - x * y23;
-3 : NUMBER
+Line: f 
+f : IDENTIFIER
+
+Line: fv4 
+fv4 : IDENTIFIER
+
+Line: sl29Lc 
+sl29Lc : IDENTIFIER
+
+Line: JUx5R9Yn32Ux 
+JUx5R9Yn32Ux : IDENTIFIER
+
+Line: true 
+true : IDENTIFIER
+
+Line: false10 
+false10 : IDENTIFIER
+
+Line: while6y
+while6y : IDENTIFIER
+
+Line: 28 
+28 : NUMBER
+
+Line: 00042  
+00042 : NUMBER
+
+Line: 1000020000040058
+1000020000040058 : NUMBER
+
+Line: + - * / ( ) 
 + : SYMBOL
-8 : NUMBER
 - : SYMBOL
-x : IDENTIFIER
 * : SYMBOL
-y : IDENTIFIER
-; : SYMBOL
-
-Line: cxo6y / 67z23 * 56& 34 * x
-c : IDENTIFIER
 / : SYMBOL
-6 : NUMBER
-z : IDENTIFIER
-* : SYMBOL
-5 : NUMBER
-ERROR READING "&" (line 4)
+( : SYMBOL
+) : SYMBOL
 
-Line: 2 + x
-2 : NUMBER
+Line: . 45. %df df67DF$m : UV'ay XS, L;Px. S# `U O@ 0oN^m f28m: 3-vP\
+ERROR READING "." (line 25)
+45 : NUMBER
+ERROR READING "." (line 25)
+
+Line: f28m+ gG3- xw67*m8 j/N2 -N78 49s2xt true(26 whiledo5)ys6  +3m3 T)28j
+f28m : IDENTIFIER
 + : SYMBOL
-x : IDENTIFIER
-
-Line: catfood:=45
-c : IDENTIFIER
-:= : SYMBOL
-4 : NUMBER
+gG3 : IDENTIFIER
+- : SYMBOL
+xw67 : IDENTIFIER
+* : SYMBOL
+m8 : IDENTIFIER
+j : IDENTIFIER
+/ : SYMBOL
+N2 : IDENTIFIER
+- : SYMBOL
+N78 : IDENTIFIER
+49 : NUMBER
+s2xt : IDENTIFIER
+true : IDENTIFIER
+( : SYMBOL
+26 : NUMBER
+whiledo5 : IDENTIFIER
+) : SYMBOL
+ys6 : IDENTIFIER
++ : SYMBOL
+3 : NUMBER
+m3 : IDENTIFIER
+T : IDENTIFIER
+) : SYMBOL
+28 : NUMBER
+j : IDENTIFIER
 

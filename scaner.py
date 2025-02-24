@@ -8,23 +8,27 @@ state_line_of_the_error = True
 identifierRegex = r"[a-zA-Z][a-zA-Z0-9]*"
 numberRegex = r"[0-9]+"
 symbolRegex = r"\+|\-|\*|/|\(|\)|:=|;"
+keywordRegex = r"if|then|else|endif|while|do|endwhile|skip"
 
 
 class TokenType(Enum):
     ID = "identifier"
     NUM = "number"
     SYM = "symbol"
+    KEYWORD = "keyword"
     ERR = "error"
     SPACE = "space"
 
 
 def get_token_type(token):
-    if re.fullmatch(identifierRegex, token):
-        return TokenType.ID.value
+    if re.fullmatch(keywordRegex, token):
+        return TokenType.KEYWORD.value
     elif re.fullmatch(numberRegex, token):
         return TokenType.NUM.value
     elif re.fullmatch(symbolRegex, token):
         return TokenType.SYM.value
+    elif re.fullmatch(identifierRegex, token):
+        return TokenType.ID.value
     elif re.fullmatch(" ", token):
         return TokenType.SPACE.value
     else:
@@ -42,19 +46,29 @@ initTokenizedLineDict = lambda line_number, title, tokens: {
 
 # Do not call this method itself even for a single string, use scaner instead
 def scan_line(inputString=""):
-    tokens = [initTokenDict(inputString[0].strip())]
+    tokens = [initTokenDict(inputString[0])]
     index = 1
+    if tokens[-1]["tokenType"] == TokenType.ERR.value:
+            break
     while index < len(inputString):
         current_token = tokens[-1]["token"]
         current_token_type = tokens[-1]["tokenType"]
 
         char = inputString[index]
         char_type = get_token_type(char)
+        # print(char, char_type)
 
         potential_updated_token = f"{current_token}{char}"
         potential_updated_token_type = get_token_type(potential_updated_token)
 
-        if potential_updated_token_type == TokenType.ERR.value:
+        if char_type == TokenType.SPACE.value:
+            while inputString[index] == TokenType.SPACE.value:
+                index += 1
+            print(char)
+            tokens.append(initTokenDict(char))
+            index += 1
+
+        elif potential_updated_token_type == TokenType.ERR.value:
             # Check if continue reading won't start to make sense
             # For example, while ":" is an error, ":=" is a symbol
             look_ahead_index = index + 1
@@ -75,16 +89,26 @@ def scan_line(inputString=""):
                 tokens[-1]["tokenType"] = TokenType.ERR.value
                 break
 
-        elif current_token_type == potential_updated_token_type:
-            current_token = potential_updated_token
+        elif (
+            current_token_type == potential_updated_token_type
+            or (
+                current_token_type == TokenType.ID.value
+                and potential_updated_token_type == TokenType.KEYWORD.value
+            )
+            or (
+                current_token_type == TokenType.KEYWORD.value
+                and potential_updated_token_type == TokenType.ID.value
+            )
+        ):
+            tokens[-1] = initTokenDict(potential_updated_token)
             index += 1
-        else:
-            if char_type != TokenType.SPACE.value:
-                tokens.append(initTokenDict(char))
+        # else:
+        #     if char_type != TokenType.SPACE.value:
+        #         tokens.append(initTokenDict(char))
 
-            index += 1
+        #     index += 1
 
-    return tokens
+    return [token for token in tokens if token["tokenType"] != TokenType.SPACE.value]
 
 
 def scaner(string_to_tokenize):
@@ -92,7 +116,7 @@ def scaner(string_to_tokenize):
     tokenized_lines = []
     for line_number, line in enumerate(lines_to_tokenize, start=1):
         if line and not line.isspace():
-            tokens = scan_line(line)
+            tokens = scan_line(line.lstrip())
             tokenized_lines.append(initTokenizedLineDict(line_number, line, tokens))
     return tokenized_lines
 
@@ -127,7 +151,7 @@ def main():
         input_and_output(args.arguments[0], args.arguments[1])
     else:
         string_to_tokenize = " ".join(args.arguments)
-        tokenized_lines = scaner(string_to_tokenize)
+        tokenized_lines = scaner(string_to_tokenize.lstrip())
         for line in tokenized_lines:
             print(f"Line: {line["line"]}")
             for token in line["tokens"]:
