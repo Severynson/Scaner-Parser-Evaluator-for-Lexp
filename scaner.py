@@ -1,3 +1,6 @@
+# Student: Severyn Kurach
+# Project Phase: 1.2
+
 import re
 from enum import Enum
 import os
