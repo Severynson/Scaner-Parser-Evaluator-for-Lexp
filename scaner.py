@@ -55,7 +55,6 @@ def scan_line(inputString=""):
 
             char = inputString[index]
             char_type = get_token_type(char)
-            # print(char, char_type)
 
             potential_updated_token = f"{current_token}{char}"
             potential_updated_token_type = get_token_type(potential_updated_token)
@@ -63,7 +62,6 @@ def scan_line(inputString=""):
             if char_type == TokenType.SPACE.value:
                 while inputString[index] == TokenType.SPACE.value:
                     index += 1
-                print(char)
                 tokens.append(initTokenDict(char))
                 index += 1
 
