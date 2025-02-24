@@ -37,7 +37,7 @@ Line: + - * / ( )
 ) : SYMBOL
 
 Line: . 45. %df df67DF$m : UV'ay XS, L;Px. S# `U O@ 0oN^m f28m: 3-vP\
-ERROR READING "." (line 25)
+ERROR READING "." 
 
 Line: f28m+ gG3- xw67*m8 j/N2 -N78 49s2xt true(26 whiledo5)ys6  +3m3 T)28j
 f28m : IDENTIFIER

@@ -25,7 +25,7 @@ Line:         whiley := 12^2;
 whiley : IDENTIFIER
 := : SYMBOL
 12 : NUMBER
-ERROR READING "^" (line 5)
+ERROR READING "^" 
 
 Line:         z:= x32
 z : IDENTIFIER

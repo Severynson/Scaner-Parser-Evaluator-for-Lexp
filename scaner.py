@@ -6,7 +6,7 @@ from enum import Enum
 import os
 import argparse
 
-state_line_of_the_error = True
+state_line_of_the_error = False
 
 identifierRegex = r"[a-zA-Z][a-zA-Z0-9]*"
 numberRegex = r"[0-9]+"
