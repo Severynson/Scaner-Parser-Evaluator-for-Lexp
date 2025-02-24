@@ -48,65 +48,59 @@ initTokenizedLineDict = lambda line_number, title, tokens: {
 def scan_line(inputString=""):
     tokens = [initTokenDict(inputString[0])]
     index = 1
-    if tokens[-1]["tokenType"] == TokenType.ERR.value:
-            break
-    while index < len(inputString):
-        current_token = tokens[-1]["token"]
-        current_token_type = tokens[-1]["tokenType"]
+    if tokens[-1]["tokenType"] != TokenType.ERR.value:
+        while index < len(inputString):
+            current_token = tokens[-1]["token"]
+            current_token_type = tokens[-1]["tokenType"]
 
-        char = inputString[index]
-        char_type = get_token_type(char)
-        # print(char, char_type)
+            char = inputString[index]
+            char_type = get_token_type(char)
+            # print(char, char_type)
 
-        potential_updated_token = f"{current_token}{char}"
-        potential_updated_token_type = get_token_type(potential_updated_token)
+            potential_updated_token = f"{current_token}{char}"
+            potential_updated_token_type = get_token_type(potential_updated_token)
 
-        if char_type == TokenType.SPACE.value:
-            while inputString[index] == TokenType.SPACE.value:
-                index += 1
-            print(char)
-            tokens.append(initTokenDict(char))
-            index += 1
-
-        elif potential_updated_token_type == TokenType.ERR.value:
-            # Check if continue reading won't start to make sense
-            # For example, while ":" is an error, ":=" is a symbol
-            look_ahead_index = index + 1
-            found_valid = False
-
-            while look_ahead_index <= len(inputString):
-                potential_token = inputString[index:look_ahead_index]
-                if get_token_type(potential_token) != TokenType.ERR.value:
-                    if char_type != TokenType.SPACE.value:
-                        tokens.append(initTokenDict(potential_token))
-                    index = look_ahead_index
-                    found_valid = True
-                    break
-                look_ahead_index += 1
-
-            if not found_valid:
+            if char_type == TokenType.SPACE.value:
+                while inputString[index] == TokenType.SPACE.value:
+                    index += 1
+                print(char)
                 tokens.append(initTokenDict(char))
-                tokens[-1]["tokenType"] = TokenType.ERR.value
-                break
+                index += 1
 
-        elif (
-            current_token_type == potential_updated_token_type
-            or (
-                current_token_type == TokenType.ID.value
-                and potential_updated_token_type == TokenType.KEYWORD.value
-            )
-            or (
-                current_token_type == TokenType.KEYWORD.value
-                and potential_updated_token_type == TokenType.ID.value
-            )
-        ):
-            tokens[-1] = initTokenDict(potential_updated_token)
-            index += 1
-        # else:
-        #     if char_type != TokenType.SPACE.value:
-        #         tokens.append(initTokenDict(char))
+            elif potential_updated_token_type == TokenType.ERR.value:
+                # Check if continue reading won't start to make sense
+                # For example, while ":" is an error, ":=" is a symbol
+                look_ahead_index = index + 1
+                found_valid = False
 
-        #     index += 1
+                while look_ahead_index <= len(inputString):
+                    potential_token = inputString[index:look_ahead_index]
+                    if get_token_type(potential_token) != TokenType.ERR.value:
+                        if char_type != TokenType.SPACE.value:
+                            tokens.append(initTokenDict(potential_token))
+                        index = look_ahead_index
+                        found_valid = True
+                        break
+                    look_ahead_index += 1
+
+                if not found_valid:
+                    tokens.append(initTokenDict(char))
+                    tokens[-1]["tokenType"] = TokenType.ERR.value
+                    break
+
+            elif (
+                current_token_type == potential_updated_token_type
+                or (
+                    current_token_type == TokenType.ID.value
+                    and potential_updated_token_type == TokenType.KEYWORD.value
+                )
+                or (
+                    current_token_type == TokenType.KEYWORD.value
+                    and potential_updated_token_type == TokenType.ID.value
+                )
+            ):
+                tokens[-1] = initTokenDict(potential_updated_token)
+                index += 1
 
     return [token for token in tokens if token["tokenType"] != TokenType.SPACE.value]
 
