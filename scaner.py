@@ -12,6 +12,7 @@ identifierRegex = r"[a-zA-Z][a-zA-Z0-9]*"
 numberRegex = r"[0-9]+"
 symbolRegex = r"\+|\-|\*|/|\(|\)|:=|;"
 keywordRegex = r"if|then|else|endif|while|do|endwhile|skip"
+spaceOrTabRegex = r"[\s]"
 
 
 class TokenType(Enum):
@@ -32,7 +33,7 @@ def get_token_type(token):
         return TokenType.SYM.value
     elif re.fullmatch(identifierRegex, token):
         return TokenType.ID.value
-    elif re.fullmatch(" ", token):
+    elif re.fullmatch(spaceOrTabRegex, token):
         return TokenType.SPACE.value
     else:
         return TokenType.ERR.value
