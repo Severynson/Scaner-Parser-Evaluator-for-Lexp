@@ -116,11 +116,14 @@ def scaner(string_to_tokenize):
             tokenized_lines.append(initTokenizedLineDict(line_number, line, tokens))
     return tokenized_lines
 
+def scan_file_to_tokenized_lines(input_file):
+        with open(input_file, "r") as file:
+            file_content = file.read()
+        tokenized_file_lines = scaner(file_content)
+        return tokenized_file_lines
 
 def input_and_output(input_file, output_file):
-    with open(input_file, "r") as file:
-        file_content = file.read()
-    tokenized_file_lines = scaner(file_content)
+    tokenized_file_lines = scan_file_to_tokenized_lines(input_file)
 
     with open(output_file, "w") as file_to_write:
         for line in tokenized_file_lines:
