@@ -169,3 +169,7 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+#### aditional
+test_1.txt
+test_input.txt
