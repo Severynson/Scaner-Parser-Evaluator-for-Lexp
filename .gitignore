@@ -171,6 +171,7 @@ cython_debug/
 .pypirc
 
 #### aditional
+output_file.txt
 test_1.txt
 test_2.txt
 
