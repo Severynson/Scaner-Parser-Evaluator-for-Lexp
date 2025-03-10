@@ -87,7 +87,7 @@ def write_ast(node, file_to_write, indentation=0):
         file_to_write.write("")
 
 
-def test_driver(input_file, output_file="test_output.txt"):
+def test_driver(input_file, output_file):
     global line_currently_parsed
     global line_num_currently_parsed
     tokenized_lines = scan_file_to_tokenized_lines(input_file)
@@ -103,9 +103,9 @@ def test_driver(input_file, output_file="test_output.txt"):
 
 
 def error(message):
-    with open(output_file, "w") as f:
-        f.write(f"Parsing Error: {message}\n")
-        f.write(
+    with open(output_file, "w") as file_to_write:
+        file_to_write.write(f"Parsing Error: {message}\n")
+        file_to_write.write(
             f'In the line #{line_num_currently_parsed}: "{line_currently_parsed}"\n'
         )
     sys.exit(1)
