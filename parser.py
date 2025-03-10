@@ -10,71 +10,87 @@ initNode = lambda nodeValue, children, nodeType="non-terminal": {
 }
 
 
-def parse_expression(tokens, pos):
+def parse_expression(tokens, position):
     """Parse an expression: term { + term }"""
-    node, pos = parse_term(tokens, pos)
-    while pos < len(tokens) and tokens[pos]["token"] == "+":
-        op = tokens[pos]
-        right, pos = parse_term(tokens, pos + 1)
-        node = initNode(op, [node, right])
-    return node, pos
+    node, position = parse_term(tokens, position)
+    while position < len(tokens) and tokens[position]["token"] == "+":
+        operator = tokens[position]
+        right, position = parse_term(tokens, position + 1)
+        node = initNode(operator, [node, right])
+    return node, position
 
 
-def parse_term(tokens, pos):
+def parse_term(tokens, position):
     """Parse a term: factor { - factor }"""
-    node, pos = parse_factor(tokens, pos)
-    while pos < len(tokens) and tokens[pos]["token"] == "-":
-        op = tokens[pos]["token"]
-        right, pos = parse_factor(tokens, pos + 1)
-        node = initNode(op, [node, right])
-    return node, pos
+    node, position = parse_factor(tokens, position)
+    while position < len(tokens) and tokens[position]["token"] == "-":
+        operator = tokens[position]
+        right, position = parse_factor(tokens, position + 1)
+        node = initNode(operator, [node, right])
+    return node, position
 
 
-def parse_factor(tokens, pos):
+def parse_factor(tokens, position):
     """Parse a factor: piece { / piece }"""
-    node, pos = parse_piece(tokens, pos)
-    while pos < len(tokens) and tokens[pos]["token"] == "/":
-        op = tokens[pos]["token"]
-        right, pos = parse_piece(tokens, pos + 1)
-        node = initNode(op, [node, right])
-    return node, pos
+    node, position = parse_piece(tokens, position)
+    while position < len(tokens) and tokens[position]["token"] == "/":
+        operator = tokens[position]
+        right, position = parse_piece(tokens, position + 1)
+        node = initNode(operator, [node, right])
+    return node, position
 
 
-def parse_piece(tokens, pos):
+def parse_piece(tokens, position):
     """Parse a piece: element { * element }"""
-    node, pos = parse_element(tokens, pos)
-    while pos < len(tokens) and tokens[pos]["token"] == "*":
-        op = tokens[pos]["token"]
-        right, pos = parse_element(tokens, pos + 1)
-        node = initNode(op, [node, right])
-    return node, pos
+    node, position = parse_element(tokens, position)
+    while position < len(tokens) and tokens[position]["token"] == "*":
+        operator = tokens[position]
+        right, position = parse_element(tokens, position + 1)
+        node = initNode(operator, [node, right])
+    return node, position
 
 
-def parse_element(tokens, pos):
+def parse_element(tokens, position):
     """Parse an element: ( expression ) | NUMBER | IDENTIFIER"""
-    if tokens[pos]["token"] == "(":
-        node, pos = parse_expression(tokens, pos + 1)
-        if tokens[pos]["token"] == ")":
-            return node, pos + 1
+    if tokens[position]["token"] == "(":
+        node, position = parse_expression(tokens, position + 1)
+        if tokens[position]["token"] == ")":
+            return node, position + 1
         else:
-            raise SyntaxError(f"Expected ')', found {tokens[pos]['token']}")
-    elif tokens[pos]["tokenType"] == TokenType.NUM.value:
-        node = initNode(tokens[pos], [], "terminal")
-        return node, pos + 1
-    elif tokens[pos]["tokenType"] == TokenType.ID.value:
-        node = initNode(tokens[pos], [], "terminal")
-        return node, pos + 1
+            raise SyntaxError(f"Expected ')', found {tokens[position]['token']}")
+    elif tokens[position]["tokenType"] == TokenType.NUM.value:
+        node = initNode(tokens[position], [], "terminal")
+        return node, position + 1
+    elif tokens[position]["tokenType"] == TokenType.ID.value:
+        node = initNode(tokens[position], [], "terminal")
+        return node, position + 1
     else:
-        raise SyntaxError(f"Unexpected token: {tokens[pos]}")
+        raise SyntaxError(f"Unexpected token: {tokens[position]}")
 
 
-def test_driver(a, b):
-    AST = scan_file_to_tokenized_lines("input_file.txt")
-    for line_num, node in enumerate(AST, start=1):
-        tokens = node["tokens"]
-        ast, _ = parse_expression(tokens, 0)
-        print(f"Line {line_num}:")
-        print(ast)
+def write_ast(node, file_to_write, indentation=0):
+    if node:
+
+        indentations = "\t" * indentation
+        file_to_write.write(
+            f"{indentations}{(node['value'])['token']} : {(node['value'])['tokenType']}\n"
+        )
+
+        for child in node["children"]:
+            write_ast(child, file_to_write, indentation + 1)
+    else:
+        file_to_write.write("")
+
+
+def test_driver(input_file, output_file="test_output.txt"):
+    tokenized_lines = scan_file_to_tokenized_lines(input_file)
+    with open(output_file, "w") as file_to_write:
+        for tokenized_line in tokenized_lines:
+            ast, _ = parse_expression(tokenized_line["tokens"], 0)
+            file_to_write.write(
+                f'Line {tokenized_line["line_number"]} "{tokenized_line["line"]}":\n'
+            )
+            write_ast(ast, file_to_write)
 
 
 def main():

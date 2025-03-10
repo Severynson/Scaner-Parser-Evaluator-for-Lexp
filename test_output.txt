@@ -1,0 +1,10 @@
+Line 1 "3 * (5 + 2 / x - 1)":
+* : symbol
+	3 : number
+	+ : symbol
+		5 : number
+		- : symbol
+			/ : symbol
+				2 : number
+				x : identifier
+			1 : number
