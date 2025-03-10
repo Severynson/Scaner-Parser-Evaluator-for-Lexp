@@ -17,6 +17,8 @@ initNode = lambda nodeValue, children, nodeType="non-terminal": {
 
 def parse_expression(tokens, position):
     """Parse an expression: term { + term }"""
+    if position >= len(tokens):
+        error("Unexpected end of input, expected a term after expression")
     node, position = parse_term(tokens, position)
     while position < len(tokens) and tokens[position]["token"] == "+":
         operator = tokens[position]
@@ -27,6 +29,8 @@ def parse_expression(tokens, position):
 
 def parse_term(tokens, position):
     """Parse a term: factor { - factor }"""
+    if position >= len(tokens):
+        error("Unexpected end of input, expected a factor after term")
     node, position = parse_factor(tokens, position)
     while position < len(tokens) and tokens[position]["token"] == "-":
         operator = tokens[position]
@@ -37,6 +41,8 @@ def parse_term(tokens, position):
 
 def parse_factor(tokens, position):
     """Parse a factor: piece { / piece }"""
+    if position >= len(tokens):
+        error("Unexpected end of input, expected a piece after factor")
     node, position = parse_piece(tokens, position)
     while position < len(tokens) and tokens[position]["token"] == "/":
         operator = tokens[position]
@@ -47,6 +53,8 @@ def parse_factor(tokens, position):
 
 def parse_piece(tokens, position):
     """Parse a piece: element { * element }"""
+    if position >= len(tokens):
+        error("Unexpected end of input, expected an element after piece")
     node, position = parse_element(tokens, position)
     while position < len(tokens) and tokens[position]["token"] == "*":
         operator = tokens[position]
@@ -57,10 +65,13 @@ def parse_piece(tokens, position):
 
 def parse_element(tokens, position):
     """Parse an element: ( expression ) | NUMBER | IDENTIFIER"""
+    if position >= len(tokens):
+        error("Unexpected end of input, expected a NUMBER, IDENTIFIER, or '('")
+
     if tokens[position]["token"] == "(":
         node, position = parse_expression(tokens, position + 1)
         if position >= len(tokens):
-            error("Unexpected end of input: missing closing parenthesis")
+            error("Unexpected end of input, missing closing parenthesis")
         elif tokens[position]["token"] == ")":
             return node, position + 1
     elif tokens[position]["tokenType"] == TokenType.NUM.value:
@@ -70,7 +81,9 @@ def parse_element(tokens, position):
         node = initNode(tokens[position], [], "terminal")
         return node, position + 1
     else:
-        error(f"Unexpected token: {tokens[position]}")
+        error(
+            f'Unexpected token "{tokens[position]["token"]}", while expected a NUMBER, IDENTIFIER, or "("'
+        )
 
 
 def write_ast(node, file_to_write, indentation=0):
@@ -95,9 +108,14 @@ def test_driver(input_file, output_file):
         for tokenized_line in tokenized_lines:
             line_currently_parsed = tokenized_line["line"]
             line_num_currently_parsed = tokenized_line["line_number"]
-            ast, _ = parse_expression(tokenized_line["tokens"], 0)
+            ast, position = parse_expression(tokenized_line["tokens"], 0)
+
+            if position < len(tokenized_line["tokens"]):
+                unexpected_token = tokenized_line["tokens"][position]["token"]
+                error(f'Unexpected token "{unexpected_token}" at the end of expression')
+
             file_to_write.write(
-                f'Line {line_currently_parsed} "{line_num_currently_parsed}":\n'
+                f'Line {line_num_currently_parsed} "{line_currently_parsed}":\n'
             )
             write_ast(ast, file_to_write)
 
@@ -106,7 +124,7 @@ def error(message):
     with open(output_file, "w") as file_to_write:
         file_to_write.write(f"Parsing Error: {message}\n")
         file_to_write.write(
-            f'In the line #{line_num_currently_parsed}: "{line_currently_parsed}"\n'
+            f'in the line #{line_num_currently_parsed}: "{line_currently_parsed}"\n'
         )
     sys.exit(1)
 
