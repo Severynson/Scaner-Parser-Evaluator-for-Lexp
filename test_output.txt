@@ -1,2 +1,27 @@
-Parsing Error: Unexpected end of input, an ssignment, ifstatement, whilestatement or skip was expected after basestatement
-in the line #None: "None"
+SYMBOL ;
+	SYMBOL ;
+		SYMBOL ;
+			SYMBOL :=
+				IDENTIFIER z
+				NUMBER 0
+			SYMBOL :=
+				IDENTIFIER x
+				NUMBER 10
+		SYMBOL :=
+			IDENTIFIER y
+			NUMBER 0
+	WHILE-LOOP
+		SYMBOL -
+			IDENTIFIER x
+			IDENTIFIER y
+		SYMBOL ;
+			SYMBOL :=
+				IDENTIFIER z
+				SYMBOL +
+					IDENTIFIER z
+					IDENTIFIER y
+			SYMBOL :=
+				IDENTIFIER y
+				SYMBOL +
+					IDENTIFIER y
+					NUMBER 1
