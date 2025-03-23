@@ -113,14 +113,17 @@ def scaner(string_to_tokenize):
     for line_number, line in enumerate(lines_to_tokenize, start=1):
         if line and not line.isspace():
             tokens = scan_line(line.lstrip())
+            tokens = [{**token, "lineNumber": line_number} for token in tokens]
             tokenized_lines.append(initTokenizedLineDict(line_number, line, tokens))
     return tokenized_lines
 
+
 def scan_file_to_tokenized_lines(input_file):
-        with open(input_file, "r") as file:
-            file_content = file.read()
-        tokenized_file_lines = scaner(file_content)
-        return tokenized_file_lines
+    with open(input_file, "r") as file:
+        file_content = file.read()
+    tokenized_file_lines = scaner(file_content)
+    return tokenized_file_lines
+
 
 def input_and_output(input_file, output_file):
     tokenized_file_lines = scan_file_to_tokenized_lines(input_file)

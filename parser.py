@@ -8,11 +8,102 @@ line_currently_parsed, line_num_currently_parsed = None, None
 output_file = "test_output.txt"
 
 
-initNode = lambda nodeValue, children, nodeType="non-terminal": {
+init_node = lambda nodeValue, children, nodeType="non-terminal": {
     "value": nodeValue,
     "nodeType": nodeType,
     "children": children,
 }
+
+
+# def parse_statement(tokens, position):
+#     """Parse a statement: basestatement { ; basestatement }"""
+#     if position >= len(tokens):
+#         error("Unexpected end of input, expected a basestatement after statement")
+#     node, position = parse_basestatement(tokens, position)
+#     while position < len(tokens) and tokens[position]["token"] == ";":
+#         operator = tokens[position]
+#         right, position = parse_basestatement(tokens, position + 1)
+#         node = init_node(operator, [node, right])
+#     return node, position
+
+
+# def parse_basestatement(tokens, position):
+#     """Parse a basestatement: assignment | ifstatement | whilestatement | skip"""
+#     if position >= len(tokens):
+#         error("Unexpected end of input, expected a basestatement")
+#     current_token = tokens[position]
+#     if current_token["tokenType"] == TokenType.ID.value:
+#         return parse_assignment(tokens, position)
+#     elif current_token["token"] == "if":
+#         return parse_ifstatement(tokens, position)
+#     elif current_token["token"] == "while":
+#         return parse_whilestatement(tokens, position)
+#     elif current_token["token"] == "skip":
+#         return parse_skip(tokens, position)
+#     else:
+#         error(
+#             "Unexpected end of input, an ssignment, ifstatement, whilestatement or skip was expected after basestatement"
+#         )
+
+
+# def parse_assignment(tokens, position):
+#     """Parse an assignment: IDENTIFIER := expression"""
+#     if position >= len(tokens):
+#         error(
+#             "Unexpected end of input, expected DENTIFIER, := and expression after assignment"
+#         )
+
+#     identifier = tokens[position]
+#     if identifier["tokenType"] != TokenType.ID.value:
+#         error(f'Expected IDENTIFIER, got "{identifier["token"]}".')
+#     identifier = init_node(identifier, [], "terminal")
+#     position += 1
+
+#     if position >= len(tokens) or tokens[position]["token"] != ":=":
+#         error("Expected ':=' after identifier in assignment")
+#     operator = tokens[position]
+#     position += 1
+#     expression, position = parse_expression(tokens, position)
+
+#     node = init_node(operator, [identifier, expression])
+#     return node, position
+
+
+# def parse_ifstatement(tokens, position):
+#     """Parse an ifstatement: if expression then statement else statement endif"""
+#     if_token = tokens[position]
+#     position += 1
+
+#     condition, position = parse_expression(tokens, position)
+
+#     if position >= len(tokens) or tokens[position]["token"] != "then":
+#         error("Expected 'then' after if condition")
+#     position += 1
+
+#     then_statement, position = parse_statement(tokens, position)
+
+#     if position >= len(tokens) or tokens[position]["token"] != "else":
+#         error("Expected 'else' in if statement")
+#     position += 1
+
+#     else_statement, position = parse_statement(tokens, position)
+
+#     if position >= len(tokens) or tokens[position]["token"] != "endif":
+#         error("Expected 'endif' at end of if statement")
+#     position += 1
+
+#     node = init_node(if_token, [condition, then_statement, else_statement])
+#     return node, position
+
+
+# def parse_whilestatement(tokens, position):
+#     """Parse a whilestatement: while expression do statement endwhile"""
+#     pass
+
+
+# def parse_skip(tokens, position):
+#     """Parse a skip statement"""
+#     return init_node(tokens[position], [], "terminal")
 
 
 def parse_expression(tokens, position):
@@ -23,7 +114,7 @@ def parse_expression(tokens, position):
     while position < len(tokens) and tokens[position]["token"] == "+":
         operator = tokens[position]
         right, position = parse_term(tokens, position + 1)
-        node = initNode(operator, [node, right])
+        node = init_node(operator, [node, right])
     return node, position
 
 
@@ -35,7 +126,7 @@ def parse_term(tokens, position):
     while position < len(tokens) and tokens[position]["token"] == "-":
         operator = tokens[position]
         right, position = parse_factor(tokens, position + 1)
-        node = initNode(operator, [node, right])
+        node = init_node(operator, [node, right])
     return node, position
 
 
@@ -47,7 +138,7 @@ def parse_factor(tokens, position):
     while position < len(tokens) and tokens[position]["token"] == "/":
         operator = tokens[position]
         right, position = parse_piece(tokens, position + 1)
-        node = initNode(operator, [node, right])
+        node = init_node(operator, [node, right])
     return node, position
 
 
@@ -59,7 +150,7 @@ def parse_piece(tokens, position):
     while position < len(tokens) and tokens[position]["token"] == "*":
         operator = tokens[position]
         right, position = parse_element(tokens, position + 1)
-        node = initNode(operator, [node, right])
+        node = init_node(operator, [node, right])
     return node, position
 
 
@@ -75,10 +166,10 @@ def parse_element(tokens, position):
         elif tokens[position]["token"] == ")":
             return node, position + 1
     elif tokens[position]["tokenType"] == TokenType.NUM.value:
-        node = initNode(tokens[position], [], "terminal")
+        node = init_node(tokens[position], [], "terminal")
         return node, position + 1
     elif tokens[position]["tokenType"] == TokenType.ID.value:
-        node = initNode(tokens[position], [], "terminal")
+        node = init_node(tokens[position], [], "terminal")
         return node, position + 1
     else:
         error(
@@ -118,6 +209,21 @@ def test_driver(input_file, output_file):
                 f'Line {line_num_currently_parsed} "{line_currently_parsed}":\n'
             )
             write_ast(ast, file_to_write)
+
+    # all_tokens = []
+    # for line in tokenized_lines:
+    #     all_tokens.extend(line["tokens"])
+
+    # print(all_tokens)
+
+    # with open(output_file, "w") as file_to_write:
+    #     ast, position = parse_statement(all_tokens, 0)
+
+    #     if position < len(all_tokens):
+    #         unexpected_token = all_tokens[position]["token"]
+    #         error(f'Unexpected token "{unexpected_token}" at the end of input')
+
+    #     write_ast(ast, file_to_write)
 
 
 def error(message):
