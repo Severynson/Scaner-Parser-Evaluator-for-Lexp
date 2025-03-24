@@ -1,5 +1,5 @@
 # Student: Severyn Kurach
-# Project Phase: 2.1
+# Project Phase: 2.2
 
 import os, sys, argparse
 from scaner import scan_file_to_tokenized_lines, TokenType
