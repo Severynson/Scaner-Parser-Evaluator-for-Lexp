@@ -258,6 +258,12 @@ def write_ast(node, file_to_write, indentation=0):
         file_to_write.write("")
 
 
+def write_tokens(tokens, file_to_write):
+    for token in tokens:
+        file_to_write.write(f"{token['tokenType'].upper()} {token['token']}\n")
+    file_to_write.write("\n\n")
+
+
 def test_driver(input_file, output_file):
     global tokenized_lines
     tokenized_lines = scan_file_to_tokenized_lines(input_file)
@@ -276,6 +282,10 @@ def test_driver(input_file, output_file):
                 all_tokens[position]["lineNumber"],
             )
 
+        file_to_write.write("Tokens:\n")
+        write_tokens(all_tokens, file_to_write)
+
+        file_to_write.write("AST:\n")
         write_ast(ast, file_to_write)
 
 
