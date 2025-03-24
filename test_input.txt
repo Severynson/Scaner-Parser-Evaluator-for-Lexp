@@ -5,4 +5,27 @@ y := 0;
 while x-y do
         z := z + y;
         y := y + 1
-endwhile
+endwhile;
+
+if x then
+        if y - 2 then
+                x := 5
+        else
+                z := 6
+        endif
+else
+        t := 4 - 3
+endif;
+
+while 5 do skip endwhile;
+
+x := 1; y := 2 + 3;
+
+if z then
+        while x * 4 - 2 do
+                skip
+        endwhile
+else
+        x := 7
+endif;
+y := 1

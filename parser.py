@@ -28,7 +28,7 @@ def parse_statement(tokens, position):
     if position >= len(tokens):
         error(
             "Unexpected end of input, expected a basestatement after statement",
-            tokens[position]["lineNumber"],
+            tokens[position - 1]["lineNumber"],
         )
     node, position = parse_basestatement(tokens, position)
     while position < len(tokens) and tokens[position]["token"] == ";":
@@ -43,7 +43,7 @@ def parse_basestatement(tokens, position):
     if position >= len(tokens):
         error(
             "Unexpected end of input, expected a basestatement",
-            tokens[position]["lineNumber"],
+            tokens[position - 1]["lineNumber"],
         )
     current_token = tokens[position]
     if current_token["tokenType"] == TokenType.ID.value:
@@ -66,7 +66,7 @@ def parse_assignment(tokens, position):
     if position >= len(tokens):
         error(
             "Unexpected end of input, expected DENTIFIER, := and expression after assignment",
-            tokens[position]["lineNumber"],
+            tokens[position - 1]["lineNumber"],
         )
 
     identifier = tokens[position]
@@ -78,7 +78,12 @@ def parse_assignment(tokens, position):
     identifier = init_node(identifier, [], "terminal")
     position += 1
 
-    if position >= len(tokens) or tokens[position]["token"] != ":=":
+    if position >= len(tokens):
+        error(
+            "Expected ':=' after identifier in assignment",
+            tokens[position]["lineNumber" - 1],
+        )
+    elif tokens[position]["token"] != ":=":
         error(
             "Expected ':=' after identifier in assignment",
             tokens[position]["lineNumber"],
@@ -139,13 +144,12 @@ def parse_whilestatement(tokens, position):
     position += 1
 
     node = init_node(while_token, [condition, body_statement])
-    print(body_statement)
     return node, position
 
 
 def parse_skip(tokens, position):
     """Parse a skip statement"""
-    return init_node(tokens[position], [], "terminal")
+    return init_node(tokens[position], [], "terminal"), position + 1
 
 
 def parse_expression(tokens, position):
@@ -153,7 +157,7 @@ def parse_expression(tokens, position):
     if position >= len(tokens):
         error(
             "Unexpected end of input, expected a term after expression",
-            tokens[position]["lineNumber"],
+            tokens[position - 1]["lineNumber"],
         )
     node, position = parse_term(tokens, position)
     while position < len(tokens) and tokens[position]["token"] == "+":
@@ -168,7 +172,7 @@ def parse_term(tokens, position):
     if position >= len(tokens):
         error(
             "Unexpected end of input, expected a factor after term",
-            tokens[position]["lineNumber"],
+            tokens[position - 1]["lineNumber"],
         )
     node, position = parse_factor(tokens, position)
     while position < len(tokens) and tokens[position]["token"] == "-":
@@ -183,7 +187,7 @@ def parse_factor(tokens, position):
     if position >= len(tokens):
         error(
             "Unexpected end of input, expected a piece after factor",
-            tokens[position]["lineNumber"],
+            tokens[position - 1]["lineNumber"],
         )
     node, position = parse_piece(tokens, position)
     while position < len(tokens) and tokens[position]["token"] == "/":
@@ -198,7 +202,7 @@ def parse_piece(tokens, position):
     if position >= len(tokens):
         error(
             "Unexpected end of input, expected an element after piece",
-            tokens[position]["lineNumber"],
+            tokens[position - 1]["lineNumber"],
         )
     node, position = parse_element(tokens, position)
     while position < len(tokens) and tokens[position]["token"] == "*":
@@ -213,7 +217,7 @@ def parse_element(tokens, position):
     if position >= len(tokens):
         error(
             "Unexpected end of input, expected a NUMBER, IDENTIFIER, or '('",
-            tokens[position]["lineNumber"],
+            tokens[position - 1]["lineNumber"],
         )
 
     if tokens[position]["token"] == "(":
@@ -221,7 +225,7 @@ def parse_element(tokens, position):
         if position >= len(tokens):
             error(
                 "Unexpected end of input, missing closing parenthesis",
-                tokens[position]["lineNumber"],
+                tokens[position - 1]["lineNumber"],
             )
         elif tokens[position]["token"] == ")":
             return node, position + 1

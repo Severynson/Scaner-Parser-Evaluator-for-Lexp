@@ -1,27 +1,76 @@
 SYMBOL ;
 	SYMBOL ;
 		SYMBOL ;
-			SYMBOL :=
-				IDENTIFIER z
-				NUMBER 0
-			SYMBOL :=
-				IDENTIFIER x
-				NUMBER 10
-		SYMBOL :=
-			IDENTIFIER y
-			NUMBER 0
-	WHILE-LOOP
-		SYMBOL -
-			IDENTIFIER x
-			IDENTIFIER y
-		SYMBOL ;
-			SYMBOL :=
-				IDENTIFIER z
-				SYMBOL +
-					IDENTIFIER z
-					IDENTIFIER y
+			SYMBOL ;
+				SYMBOL ;
+					SYMBOL ;
+						SYMBOL ;
+							SYMBOL ;
+								SYMBOL ;
+									SYMBOL :=
+										IDENTIFIER z
+										NUMBER 0
+									SYMBOL :=
+										IDENTIFIER x
+										NUMBER 10
+								SYMBOL :=
+									IDENTIFIER y
+									NUMBER 0
+							WHILE-LOOP
+								SYMBOL -
+									IDENTIFIER x
+									IDENTIFIER y
+								SYMBOL ;
+									SYMBOL :=
+										IDENTIFIER z
+										SYMBOL +
+											IDENTIFIER z
+											IDENTIFIER y
+									SYMBOL :=
+										IDENTIFIER y
+										SYMBOL +
+											IDENTIFIER y
+											NUMBER 1
+						KEYWORD if
+							IDENTIFIER x
+							KEYWORD if
+								SYMBOL -
+									IDENTIFIER y
+									NUMBER 2
+								SYMBOL :=
+									IDENTIFIER x
+									NUMBER 5
+								SYMBOL :=
+									IDENTIFIER z
+									NUMBER 6
+							SYMBOL :=
+								IDENTIFIER t
+								SYMBOL -
+									NUMBER 4
+									NUMBER 3
+					WHILE-LOOP
+						NUMBER 5
+						KEYWORD skip
+				SYMBOL :=
+					IDENTIFIER x
+					NUMBER 1
 			SYMBOL :=
 				IDENTIFIER y
 				SYMBOL +
-					IDENTIFIER y
-					NUMBER 1
+					NUMBER 2
+					NUMBER 3
+		KEYWORD if
+			IDENTIFIER z
+			WHILE-LOOP
+				SYMBOL -
+					SYMBOL *
+						IDENTIFIER x
+						NUMBER 4
+					NUMBER 2
+				KEYWORD skip
+			SYMBOL :=
+				IDENTIFIER x
+				NUMBER 7
+	SYMBOL :=
+		IDENTIFIER y
+		NUMBER 1
