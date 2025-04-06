@@ -264,26 +264,36 @@ def write_tokens(tokens, file_to_write):
     file_to_write.write("\n\n")
 
 
+def parser(scaner_output, return_parsed_tokens=False):
+    parsed_tokens = []
+    for line in tokenized_lines:
+        parsed_tokens.extend(line["tokens"])
+
+    ast, position = parse_statement(parsed_tokens, 0)
+
+    if position < len(parsed_tokens):
+        unexpected_token = parsed_tokens[position]["token"]
+        error(
+            f'Unexpected token "{unexpected_token}" at the end of input',
+            parsed_tokens[position]["lineNumber"],
+        )
+
+    if return_parsed_tokens:
+        return parsed_tokens, ast
+    else:
+        return ast
+
+
 def test_driver(input_file, output_file):
     global tokenized_lines
     tokenized_lines = scan_file_to_tokenized_lines(input_file)
 
-    all_tokens = []
-    for line in tokenized_lines:
-        all_tokens.extend(line["tokens"])
+    parsed_tokens, ast = parser(tokenized_lines, return_parsed_tokens=True)
 
     with open(output_file, "w") as file_to_write:
-        ast, position = parse_statement(all_tokens, 0)
-
-        if position < len(all_tokens):
-            unexpected_token = all_tokens[position]["token"]
-            error(
-                f'Unexpected token "{unexpected_token}" at the end of input',
-                all_tokens[position]["lineNumber"],
-            )
 
         file_to_write.write("Tokens:\n")
-        write_tokens(all_tokens, file_to_write)
+        write_tokens(parsed_tokens, file_to_write)
 
         file_to_write.write("AST:\n")
         write_ast(ast, file_to_write)
