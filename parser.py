@@ -266,7 +266,7 @@ def write_tokens(tokens, file_to_write):
 
 def parser(scaner_output, return_parsed_tokens=False):
     parsed_tokens = []
-    for line in tokenized_lines:
+    for line in scaner_output:
         parsed_tokens.extend(line["tokens"])
 
     ast, position = parse_statement(parsed_tokens, 0)
