@@ -264,12 +264,15 @@ def write_tokens(tokens, file_to_write):
     file_to_write.write("\n\n")
 
 
-def parser(scaner_output, return_parsed_tokens=False):
+def parser(scaner_output, return_parsed_tokens=False, starting_nonterminal="statement"):
     parsed_tokens = []
     for line in scaner_output:
         parsed_tokens.extend(line["tokens"])
 
-    ast, position = parse_statement(parsed_tokens, 0)
+    if starting_nonterminal == "statement":
+        ast, position = parse_statement(parsed_tokens, 0)
+    else:
+        ast, position = parse_expression(parsed_tokens, 0)
 
     if position < len(parsed_tokens):
         unexpected_token = parsed_tokens[position]["token"]
