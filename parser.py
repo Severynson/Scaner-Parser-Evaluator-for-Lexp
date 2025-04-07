@@ -249,7 +249,7 @@ def write_ast(node, file_to_write, indentation=0):
         file_to_write.write(
             f"{indentations}WHILE-LOOP\n"
             if (node["value"])["token"] == "while"
-            else f"{indentations}{(node['value'])['tokenType'].upper()} {(node['value'])['token']}\n"
+            else f"{indentations}{(node['value'])['token']} : {(node['value'])['tokenType'].upper()}\n"
         )
 
         for child in node["children"]:
@@ -260,7 +260,7 @@ def write_ast(node, file_to_write, indentation=0):
 
 def write_tokens(tokens, file_to_write):
     for token in tokens:
-        file_to_write.write(f"{token['tokenType'].upper()} {token['token']}\n")
+        file_to_write.write(f"{token['token']} : {token['tokenType'].upper()}\n")
     file_to_write.write("\n\n")
 
 
@@ -332,7 +332,7 @@ def main():
             print(f'Input file "{args.arguments[0]}" desn\'t exist')
     else:
         print(
-            f'{print(f"{args.arguments}")} ERROR: the input format has to be "python3 parser.py <input_file_title> <output_file_title>" or "python3 parser.py <input_file_title>" .\n Instead {len(args.arguments)} arguments was passed.'
+            f'{f"{args.arguments}"} ERROR: the input format has to be "python3 parser.py <input_file_title> <output_file_title>" or "python3 parser.py <input_file_title>" .\n Instead {len(args.arguments)} arguments was passed.'
         )
 
 

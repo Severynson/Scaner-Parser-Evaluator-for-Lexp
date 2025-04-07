@@ -1,171 +1,29 @@
 Tokens:
-IDENTIFIER z
-SYMBOL :=
-NUMBER 0
-SYMBOL ;
-IDENTIFIER x
-SYMBOL :=
-NUMBER 10
-SYMBOL ;
-IDENTIFIER y
-SYMBOL :=
-NUMBER 0
-SYMBOL ;
-KEYWORD while
-IDENTIFIER x
-SYMBOL -
-IDENTIFIER y
-KEYWORD do
-IDENTIFIER z
-SYMBOL :=
-IDENTIFIER z
-SYMBOL +
-IDENTIFIER y
-SYMBOL ;
-IDENTIFIER y
-SYMBOL :=
-IDENTIFIER y
-SYMBOL +
-NUMBER 1
-KEYWORD endwhile
-SYMBOL ;
-KEYWORD if
-IDENTIFIER x
-KEYWORD then
-KEYWORD if
-IDENTIFIER y
-SYMBOL -
-NUMBER 2
-KEYWORD then
-IDENTIFIER x
-SYMBOL :=
-NUMBER 5
-KEYWORD else
-IDENTIFIER z
-SYMBOL :=
-NUMBER 6
-KEYWORD endif
-KEYWORD else
-IDENTIFIER t
-SYMBOL :=
-NUMBER 4
-SYMBOL -
-NUMBER 3
-KEYWORD endif
-SYMBOL ;
-KEYWORD while
-NUMBER 5
-KEYWORD do
-KEYWORD skip
-KEYWORD endwhile
-SYMBOL ;
-IDENTIFIER x
-SYMBOL :=
-NUMBER 1
-SYMBOL ;
-IDENTIFIER y
-SYMBOL :=
-NUMBER 2
-SYMBOL +
-NUMBER 3
-SYMBOL ;
-KEYWORD if
-IDENTIFIER z
-KEYWORD then
-KEYWORD while
-IDENTIFIER x
-SYMBOL *
-NUMBER 4
-SYMBOL -
-NUMBER 2
-KEYWORD do
-KEYWORD skip
-KEYWORD endwhile
-KEYWORD else
-IDENTIFIER x
-SYMBOL :=
-NUMBER 7
-KEYWORD endif
-SYMBOL ;
-IDENTIFIER y
-SYMBOL :=
-NUMBER 1
+
+3 : NUMBER
+* : SYMBOL
+( : SYMBOL
+5 : NUMBER
++ : SYMBOL
+10 : NUMBER
+/ : SYMBOL
+3 : NUMBER
+- : SYMBOL
+1 : NUMBER
+) : SYMBOL
 
 
 AST:
-SYMBOL ;
-	SYMBOL ;
-		SYMBOL ;
-			SYMBOL ;
-				SYMBOL ;
-					SYMBOL ;
-						SYMBOL ;
-							SYMBOL ;
-								SYMBOL ;
-									SYMBOL :=
-										IDENTIFIER z
-										NUMBER 0
-									SYMBOL :=
-										IDENTIFIER x
-										NUMBER 10
-								SYMBOL :=
-									IDENTIFIER y
-									NUMBER 0
-							WHILE-LOOP
-								SYMBOL -
-									IDENTIFIER x
-									IDENTIFIER y
-								SYMBOL ;
-									SYMBOL :=
-										IDENTIFIER z
-										SYMBOL +
-											IDENTIFIER z
-											IDENTIFIER y
-									SYMBOL :=
-										IDENTIFIER y
-										SYMBOL +
-											IDENTIFIER y
-											NUMBER 1
-						KEYWORD if
-							IDENTIFIER x
-							KEYWORD if
-								SYMBOL -
-									IDENTIFIER y
-									NUMBER 2
-								SYMBOL :=
-									IDENTIFIER x
-									NUMBER 5
-								SYMBOL :=
-									IDENTIFIER z
-									NUMBER 6
-							SYMBOL :=
-								IDENTIFIER t
-								SYMBOL -
-									NUMBER 4
-									NUMBER 3
-					WHILE-LOOP
-						NUMBER 5
-						KEYWORD skip
-				SYMBOL :=
-					IDENTIFIER x
-					NUMBER 1
-			SYMBOL :=
-				IDENTIFIER y
-				SYMBOL +
-					NUMBER 2
-					NUMBER 3
-		KEYWORD if
-			IDENTIFIER z
-			WHILE-LOOP
-				SYMBOL -
-					SYMBOL *
-						IDENTIFIER x
-						NUMBER 4
-					NUMBER 2
-				KEYWORD skip
-			SYMBOL :=
-				IDENTIFIER x
-				NUMBER 7
-	SYMBOL :=
-		IDENTIFIER y
-		NUMBER 1
+
+* : SYMBOL
+	3 : NUMBER
+	+ : SYMBOL
+		5 : NUMBER
+		- : SYMBOL
+			/ : SYMBOL
+				10 : NUMBER
+				3 : NUMBER
+			1 : NUMBER
+
+
+Output: 21
