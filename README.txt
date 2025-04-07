@@ -1,12 +1,16 @@
+- To use evaluator
+Create an input txt file with the Lexp code.
+Then open terminal in this folder and input
+"python3 evaluator.py <input_file_title>.txt" (default output file will apply)
+or
+"python3 evaluator.py <input_file_title>.txt <output_file_title>.txt"
+
 - To use parser
-Create an input file with the Lexp code.
+Create an input txt file with the Lexp code.
 Then open terminal in this folder and input
 "python3 parser.py <input_file_title>.txt" (default output file will apply)
 or
 "python3 parser.py <input_file_title>.txt <output_file_title>.txt"
-
-
-
 
 - To use a scaner open the terminal in this folder and input
 "python3 ./scaner.py <input_file_title>.txt <output_file_title>.txt" to your command line tool.
