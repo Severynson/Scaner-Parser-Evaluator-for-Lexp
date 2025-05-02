@@ -1,29 +1,58 @@
 Tokens:
-
+z : IDENTIFIER
+:= : SYMBOL
+0 : NUMBER
+; : SYMBOL
+x : IDENTIFIER
+:= : SYMBOL
 3 : NUMBER
-* : SYMBOL
-( : SYMBOL
-5 : NUMBER
-+ : SYMBOL
-10 : NUMBER
-/ : SYMBOL
-3 : NUMBER
+; : SYMBOL
+y : IDENTIFIER
+:= : SYMBOL
+0 : NUMBER
+; : SYMBOL
+while : KEYWORD
+x : IDENTIFIER
 - : SYMBOL
+y : IDENTIFIER
+do : KEYWORD
+z : IDENTIFIER
+:= : SYMBOL
+z : IDENTIFIER
++ : SYMBOL
+y : IDENTIFIER
+; : SYMBOL
+y : IDENTIFIER
+:= : SYMBOL
+y : IDENTIFIER
++ : SYMBOL
 1 : NUMBER
-) : SYMBOL
+endwhile : KEYWORD
 
 
 AST:
-
-* : SYMBOL
-	3 : NUMBER
-	+ : SYMBOL
-		5 : NUMBER
+; : SYMBOL
+	:= : SYMBOL
+		y : IDENTIFIER
+		0 : NUMBER
+	WHILE-LOOP
 		- : SYMBOL
-			/ : SYMBOL
-				10 : NUMBER
-				3 : NUMBER
-			1 : NUMBER
+			x : IDENTIFIER
+			y : IDENTIFIER
+		; : SYMBOL
+			:= : SYMBOL
+				z : IDENTIFIER
+				+ : SYMBOL
+					z : IDENTIFIER
+					y : IDENTIFIER
+			:= : SYMBOL
+				y : IDENTIFIER
+				+ : SYMBOL
+					y : IDENTIFIER
+					1 : NUMBER
 
 
-Output: 21
+Output:
+z = 3
+x = 3
+y = 3
