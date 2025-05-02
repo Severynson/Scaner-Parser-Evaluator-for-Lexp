@@ -2,6 +2,10 @@ z := 0;
 x := 3;
 y := 0;
 while x-y do
-        z := z + y;
+        if 2 * 5 - 8 then
+                z := z + y
+        else
+                skip
+        endif;
 y := y + 1
 endwhile
